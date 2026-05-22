@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Chandassu Web Hub - Divine Thinking State</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+Telugu:wght@400;700;900&display=swap" rel="stylesheet"/>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "sacred-cream": "#F3E8B3",
+            "lotus-ivory": "#FFF8E6",
+            "golden-soft": "#E6CF67",
+            "golden-light": "#F5DF8A",
+            "golden-deep": "#C79B2D",
+            "temple-red": "#B84A40",
+            "helper-purple": "#4B2D72",
+            "deep-indigo": "#191447",
+            "deep-violet": "#241754",
+            "deep-plum": "#3A2450"
+          },
+          fontFamily: {
+            "display": ["Lexend", "sans-serif"]
+          },
+          borderRadius: {
+            "hero": "2.5rem",
+            "tile": "1.2rem"
+          },
+          animation: {
+            "fade-in-up": "fadeInUp 0.8s ease-out forwards",
+            "bounce-dots": "bounceDots 1.4s infinite",
+            "float-soft": "floatSoft 3s ease-in-out infinite"
+          },
+          keyframes: {
+            fadeInUp: {
+              "0%": { opacity: "0", transform: "translateY(10px)" },
+              "100%": { opacity: "1", transform: "translateY(0)" }
+            },
+            bounceDots: {
+              "0%,80%,100%": { transform: "scale(0.25)", opacity: "0.45" },
+              "40%": { transform: "scale(1)", opacity: "1" }
+            },
+            floatSoft: {
+              "0%,100%": { transform: "translateY(0px)" },
+              "50%": { transform: "translateY(-7px)" }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer base {
+      html {
+        @apply h-full;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+
+      body {
+        @apply min-h-screen font-display overflow-x-hidden;
+        font-family: "Lexend", sans-serif;
+        color: #F3E8B3;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior-y: contain;
+        touch-action: manipulation;
+        position: relative;
+        isolation: isolate;
+        background: transparent;
+      }
+
+      button,
+      a,
+      [role="button"] {
+        touch-action: manipulation;
+      }
+    }
+
+    /* STATIC PAINTED BACKGROUND */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 8% 8%, rgba(222,182,122,0.18) 0%, rgba(222,182,122,0.07) 0.45%, transparent 1.3%),
+        radial-gradient(circle at 84% 10%, rgba(222,182,122,0.16) 0%, rgba(222,182,122,0.06) 0.35%, transparent 1.1%),
+        radial-gradient(circle at 6% 28%, rgba(222,182,122,0.14) 0%, rgba(222,182,122,0.05) 0.35%, transparent 1.1%),
+
+        radial-gradient(ellipse at 87% 92%, rgba(199,124,102,0.54) 0%, rgba(132,73,81,0.33) 18%, rgba(84,44,71,0.16) 34%, transparent 48%),
+        radial-gradient(ellipse at 58% 84%, rgba(105,70,97,0.22) 0%, rgba(76,48,84,0.12) 24%, transparent 42%),
+        radial-gradient(ellipse at 5% 93%, rgba(207,43,26,0.48) 0%, rgba(150,34,33,0.22) 10%, rgba(83,28,42,0.08) 18%, transparent 26%),
+        radial-gradient(ellipse at 0% 100%, rgba(170,112,86,0.26) 0%, rgba(118,73,66,0.13) 16%, transparent 30%),
+        radial-gradient(ellipse at 45% 62%, rgba(72,45,94,0.20) 0%, rgba(46,30,76,0.10) 30%, transparent 48%),
+
+        linear-gradient(
+          180deg,
+          #151145 0%,
+          #181248 14%,
+          #1b134c 26%,
+          #1f1550 40%,
+          #241754 54%,
+          #2b1a54 68%,
+          #331f52 82%,
+          #3b2450 100%
+        );
+    }
+
+    /* PROVIDED BACKGROUND IMAGE OVERLAY (kept separate so opacity doesn't affect gradients) */
+    .provided-bg{
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background-image: url("{{ url_for('external_assets', filename='image-3de855d0-02b8-4528-b188-a1d18ca2316d.png') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.08;
+      transform: scale(1.03);
+      mix-blend-mode: normal;
+      filter: none;
+    }
+
+    /* Background video (loops behind UI) */
+    .video-bg{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: -2;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      pointer-events: none;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.01);
+      filter: saturate(1.08) contrast(1.02) brightness(0.98);
+    }
+
+    /* Rotate portrait MP4 to match landscape screens */
+    @media (orientation: landscape){
+      .video-bg{
+        width: 100vh;
+        height: 100vw;
+        transform: translate(-50%, -50%) rotate(90deg) scale(1.01);
+      }
+    }
+
+    /* BRUSH / OIL PAINT TEXTURE */
+    body::after{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.28;
+      background:
+        repeating-radial-gradient(
+          circle at 18% 26%,
+          rgba(255,255,255,0.030) 0px,
+          rgba(255,255,255,0.030) 2px,
+          rgba(0,0,0,0.020) 5px,
+          rgba(0,0,0,0.020) 9px,
+          transparent 14px,
+          transparent 24px
+        ),
+        repeating-linear-gradient(
+          18deg,
+          rgba(255,255,255,0.020) 0px,
+          rgba(255,255,255,0.020) 2px,
+          rgba(0,0,0,0.020) 6px,
+          rgba(0,0,0,0.020) 10px,
+          transparent 15px,
+          transparent 26px
+        ),
+        repeating-linear-gradient(
+          108deg,
+          rgba(255,255,255,0.016) 0px,
+          rgba(255,255,255,0.016) 1px,
+          rgba(0,0,0,0.016) 5px,
+          rgba(0,0,0,0.016) 9px,
+          transparent 13px,
+          transparent 24px
+        );
+      mix-blend-mode: soft-light;
+    }
+
+    /* SVG Mandala overlay (kept behind UI; doesn't affect gameplay) */
+    .mandala-svg-wrap{
+      display: none !important;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.03;
+      transform-origin: 50% 50%;
+      animation: mandalaDrift 70s ease-in-out infinite;
+      filter: saturate(1.04) contrast(1.03);
+      mix-blend-mode: normal;
+    }
+
+    /* Canvas rotating line mandala (from the pin you shared) */
+    #mandala-canvas{
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      display: none !important;
+    }
+
+    .mandala-svg-wrap svg{
+      width: clamp(420px, 70vw, 900px);
+      height: auto;
+      display: block;
+    }
+
+    @keyframes mandalaDrift{
+      0%   { transform: translateY(0px) rotate(0deg) scale(1); }
+      45%  { transform: translateY(-4px) rotate(0.25deg) scale(1.01); }
+      70%  { transform: translateY(-2px) rotate(0.12deg) scale(1.004); }
+      100% { transform: translateY(0px) rotate(0deg) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .mandala-svg-wrap{ animation: none; }
+    }
+
+    .mandala-slot{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .mandala-top{
+      top: -80px;
+    }
+
+    .mandala-bottom{
+      top: 220px;
+    }
+
+    .app-content{
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card{
+      background:
+        linear-gradient(180deg, rgba(25,18,62,0.58) 0%, rgba(18,14,46,0.52) 100%);
+      border: 1px solid rgba(243,232,179,0.10);
+      box-shadow:
+        0 28px 60px -18px rgba(0,0,0,0.48),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .panel-soft{
+      background:
+        linear-gradient(180deg, rgba(255,248,230,0.06) 0%, rgba(255,248,230,0.025) 100%);
+      border: 1px solid rgba(243,232,179,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .title-glow{
+      color: #FFF8E6;
+      text-shadow:
+        0 0 10px rgba(255,248,220,0.35),
+        0 0 24px rgba(230,207,103,0.20),
+        0 10px 26px rgba(0,0,0,0.55);
+    }
+
+    .gold-text{
+      color: #FFF8E6;
+      text-shadow:
+        0 0 10px rgba(255,248,220,0.35),
+        0 0 26px rgba(230,207,103,0.18),
+        0 10px 26px rgba(0,0,0,0.55);
+    }
+
+    .subtle-text{
+      color: rgba(255,248,230,0.92);
+      text-shadow:
+        0 0 10px rgba(255,248,220,0.22),
+        0 10px 26px rgba(0,0,0,0.55);
+    }
+
+    .status-chip{
+      background: rgba(20, 12, 46, 0.35);
+      border: 1px solid rgba(255, 248, 230, 0.24);
+      color: #FFF8E6;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .stage-chip{
+      background: rgba(230,207,103,0.10);
+      color: #F5DF8A;
+      border: 1px solid rgba(230,207,103,0.16);
+    }
+
+    .poem-box{
+      background: rgba(255,248,230,0.92);
+      color: #2E2250;
+      box-shadow:
+        0 16px 36px -20px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+      text-shadow: 0 2px 10px rgba(255,255,255,0.45);
+      border: 1px solid rgba(199,155,45,0.18);
+      position: relative;
+      overflow: hidden;
+      padding: 16px 18px;
+      border-radius: 2rem;
+      white-space: pre-line;
+      letter-spacing: 0.02em;
+      font-family: 'Noto Serif Telugu','Cinzel',serif;
+    }
+
+    .poem-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: none;
+      opacity: 0;
+    }
+
+    .poem-box::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background: none;
+      opacity: 0;
+    }
+
+    .poem-elephant{
+      position: absolute;
+      left: -8px;
+      bottom: -10px;
+      width: clamp(90px, 16vw, 180px);
+      height: auto;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.95;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.25));
+    }
+
+    /* Rolled wooden rods */
+    .scroll-rod{
+      position:absolute;
+      left: 34px;
+      right: 34px;
+      height: 34px;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 25% 40%, rgba(255,255,255,0.35) 0%, transparent 55%),
+        linear-gradient(180deg, #7B4A20 0%, #5E3417 45%, #3E1F0E 100%);
+      box-shadow:
+        0 18px 28px -18px rgba(0,0,0,0.45),
+        inset 0 2px 0 rgba(255,255,255,0.22),
+        inset 0 -6px 16px rgba(0,0,0,0.25);
+    }
+
+    .rod-top{
+      top: 14px;
+      transform: rotate(-1deg);
+    }
+
+    .rod-bottom{
+      bottom: 14px;
+      transform: rotate(1deg);
+    }
+
+    /* Dark burnt edge lines around scroll */
+    .poem-box .scroll-rod::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.35) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.35) 100%);
+      opacity: 0.35;
+    }
+
+    /* Animated old paper scroll */
+    .scroll-box{
+      max-height: 96px;
+      transition: max-height 900ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scroll-box.scroll-open{
+      max-height: 360px;
+      animation: scrollFloat 10s ease-in-out infinite;
+    }
+
+    @keyframes scrollFloat{
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(6px); }
+    }
+
+    #poemText{
+      opacity: 1;
+      transform: none;
+      transition: none;
+      padding: 0;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      white-space: pre-line;
+      letter-spacing: 0.02em;
+      font-family: 'Noto Serif Telugu','Cinzel',serif;
+      text-align: center;
+    }
+
+    .scroll-box.scroll-open #poemText{
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 768px){
+      .scroll-box{ max-height: 82px; }
+      .scroll-box.scroll-open{ max-height: 320px; }
+      #poemText{ padding: 0; }
+    }
+
+    .info-box{
+      background: rgba(255,248,230,0.96);
+      color: #2E2250;
+      border: 1px solid rgba(199,155,45,0.18);
+      box-shadow: 0 12px 28px -18px rgba(0,0,0,0.28);
+    }
+
+    .tile{
+      @apply rounded-tile flex flex-col items-center justify-center transition-all duration-200 p-3 min-h-[140px] relative select-none;
+      background: linear-gradient(180deg, rgba(255,248,230,0.97) 0%, rgba(243,232,179,0.92) 100%);
+      border: 2px solid rgba(199,155,45,0.18);
+      box-shadow:
+        0 9px 0 0 rgba(91,60,24,0.26),
+        0 18px 28px -14px rgba(0,0,0,0.30);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .tile:hover{
+      transform: translateY(-3px);
+      box-shadow:
+        0 11px 0 0 rgba(91,60,24,0.24),
+        0 20px 32px -14px rgba(0,0,0,0.34),
+        0 0 0 1px rgba(230,207,103,0.12);
+    }
+
+    .tile:active{
+      transform: scale(0.98);
+    }
+
+    .tile.active{
+      border-color: #E6CF67;
+      box-shadow:
+        0 11px 0 0 rgba(91,60,24,0.24),
+        0 20px 32px -14px rgba(0,0,0,0.34),
+        0 0 0 4px rgba(230,207,103,0.18);
+    }
+
+    .tile.wrong{
+      border-color: #B84A40;
+      box-shadow:
+        0 9px 0 0 rgba(91,60,24,0.22),
+        0 18px 28px -14px rgba(0,0,0,0.34),
+        0 0 0 3px rgba(184,74,64,0.18);
+    }
+
+    .ak{
+      @apply text-3xl sm:text-4xl font-black text-center break-words;
+      font-family:'Noto Sans Telugu',sans-serif;
+      color: #2D2250;
+      line-height: 1.1;
+    }
+
+    .pick{
+      @apply mt-4 flex gap-2 flex-wrap justify-center;
+    }
+
+    .pick button{
+      @apply px-3 py-2 rounded-xl text-xs font-black transition-all;
+      background: rgba(255,255,255,0.86);
+      color: #47345C;
+      border: 1px solid rgba(75,45,114,0.14);
+      min-height: 42px;
+      min-width: 72px;
+    }
+
+    .pick button:active{
+      transform: scale(0.97);
+    }
+
+    .pick button.guruOn{
+      background: linear-gradient(180deg, #F5DF8A 0%, #E6CF67 100%);
+      color: #24194C;
+      border-color: #D5AA40;
+    }
+
+    .pick button.laghuOn{
+      background: linear-gradient(180deg, #65439A 0%, #4B2D72 100%);
+      color: #FFF8E6;
+      border-color: #4B2D72;
+    }
+
+    .mini{
+      @apply absolute top-2 right-2 text-[10px] font-black uppercase tracking-wide text-transparent;
+    }
+
+    .tile.wrong .mini{
+      color: #B84A40;
+    }
+
+    .btnPrimary{
+      @apply transition-all duration-150 active:translate-y-[2px] px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold flex items-center justify-center gap-2;
+      color: #1F1747;
+      background: linear-gradient(180deg, #F5DF8A 0%, #E6CF67 55%, #C79B2D 100%);
+      box-shadow:
+        0 6px 0 0 rgba(112,80,18,0.88),
+        0 14px 24px -12px rgba(230,207,103,0.40);
+      border: 1px solid rgba(255,248,230,0.24);
+      min-height: 52px;
+    }
+
+    .btnPrimary:hover{
+      filter: brightness(1.03);
+    }
+
+    .btnSecondary{
+      @apply transition-all duration-150 active:translate-y-[2px] px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold flex items-center justify-center gap-2;
+      color: #F3E8B3;
+      background: rgba(255,248,230,0.08);
+      border: 1px solid rgba(243,232,179,0.16);
+      box-shadow: 0 10px 22px -14px rgba(0,0,0,0.34);
+      min-height: 52px;
+    }
+
+    .btnSecondary:hover{
+      background: rgba(255,248,230,0.12);
+    }
+
+    .tagPill{
+      @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide mr-2 mb-2;
+    }
+
+    .tagPill.good{
+      background: rgba(230,207,103,0.14);
+      color: #F5DF8A;
+      border: 1px solid rgba(230,207,103,0.20);
+    }
+
+    .tagPill.bad{
+      background: rgba(184,74,64,0.14);
+      color: #F4C7C2;
+      border: 1px solid rgba(184,74,64,0.18);
+    }
+
+    .tagPill.warn{
+      background: rgba(184,74,64,0.10);
+      color: #FFD7E0;
+      border: 1px solid rgba(184,74,64,0.14);
+    }
+
+    .quizOption{
+      @apply block w-full text-left rounded-2xl px-4 py-3 font-bold transition-all;
+      background: rgba(255,248,230,0.95);
+      color: #35255A;
+      border: 1px solid rgba(199,155,45,0.16);
+      min-height: 52px;
+    }
+
+    .quizOption:hover{
+      border-color: rgba(230,207,103,0.50);
+      box-shadow: 0 0 0 4px rgba(230,207,103,0.10);
+    }
+
+    .quizOption.selected{
+      background: linear-gradient(180deg, #F5DF8A 0%, #E6CF67 100%);
+      color: #211747;
+      border-color: #D2A53A;
+    }
+
+    /* HELPER STAYS ON SCREEN WHILE USER SCROLLS */
+    #helperFace{
+      position: fixed;
+      right: 0.9rem;
+      bottom: 0.9rem;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      max-width: calc(100vw - 1rem);
+      pointer-events: none;
+    }
+
+    #helperFace > *{
+      pointer-events: auto;
+    }
+
+    #bubble{
+      width: min(200px, calc(100vw - 1rem));
+      background: linear-gradient(180deg, rgba(255,248,230,0.97) 0%, rgba(243,232,179,0.93) 100%);
+      color: #3A2A60;
+      padding: 10px 12px;
+      border-radius: 22px;
+      border: 1px solid rgba(199,155,45,0.18);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.24),
+        inset 0 1px 0 rgba(255,255,255,0.55);
+      position: relative;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    #bubble::after{
+      content: "";
+      position: absolute;
+      right: 26px;
+      bottom: -8px;
+      width: 16px;
+      height: 16px;
+      background: rgba(243,232,179,0.95);
+      transform: rotate(45deg);
+      border-right: 1px solid rgba(199,155,45,0.18);
+      border-bottom: 1px solid rgba(199,155,45,0.18);
+    }
+
+    .guru-kid-img{
+      width: 100px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      position: relative;
+      z-index: 10;
+      animation: floatSoft 3s ease-in-out infinite;
+      filter: drop-shadow(0 14px 20px rgba(0,0,0,0.26));
+      -webkit-user-drag: none;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .dot{
+      @apply w-1.5 h-1.5 rounded-full animate-bounce-dots;
+      background: #4B2D72;
+    }
+
+    .dot:nth-child(2){ animation-delay: 0.2s; }
+    .dot:nth-child(3){ animation-delay: 0.4s; }
+
+    #nextHintBtn{
+      min-height: 40px;
+    }
+
+    #resultBox{
+      background: rgba(255,248,230,0.08);
+      border: 1px solid rgba(243,232,179,0.14);
+      color: #F3E8B3;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 1024px){
+      .tile{
+        min-height: 132px;
+      }
+    }
+
+    @media (max-width: 768px){
+      #helperFace{
+        right: 0.6rem;
+        bottom: 0.6rem;
+      }
+
+      #bubble{
+        width: min(170px, calc(100vw - 1rem));
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .guru-kid-img{
+        width: 80px;
+      }
+
+      .tile{
+        min-height: 122px;
+        padding: 12px;
+      }
+
+      .ak{
+        font-size: 1.6rem;
+      }
+
+      .pick button{
+        min-width: 64px;
+        min-height: 40px;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px){
+      #helperFace{
+        right: 0.45rem;
+        bottom: 0.45rem;
+      }
+
+      #bubble{
+        width: min(150px, calc(100vw - 0.75rem));
+      }
+
+      .guru-kid-img{
+        width: 70px;
+      }
+
+      .ak{
+        font-size: 1.35rem;
+      }
+
+      .tile{
+        min-height: 110px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="provided-bg" aria-hidden="true"></div>
+  <video
+    id="mandala-video-bg"
+    class="video-bg"
+    src="{{ url_for('bg_video') }}"
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="auto"
+    aria-hidden="true"
+  ></video>
+  <canvas id="mandala-canvas" aria-hidden="true"></canvas>
+  <div class="mandala-svg-wrap" aria-hidden="true">
+    <div class="mandala-slot mandala-top">
+      <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+        <defs>
+          <radialGradient id="goldGradient1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F4E8C1" stop-opacity="1" />
+            <stop offset="50%" stop-color="#E6D5A8" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#D4C494" stop-opacity="0.4" />
+          </radialGradient>
+          <radialGradient id="goldGradient2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#E8D9B8" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#C9B884" stop-opacity="0.5" />
+          </radialGradient>
+        </defs>
+
+        <g opacity="0.3">
+          <circle cx="400" cy="300" r="280" fill="none" stroke="#D4C494" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="270" fill="none" stroke="#D4C494" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="260" fill="none" stroke="#D4C494" stroke-width="0.5"/>
+        </g>
+
+        <g opacity="0.4">
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(15 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(30 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(45 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(60 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(75 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(90 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(105 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(120 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(135 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(150 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(165 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(180 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(195 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(210 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(225 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(240 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(255 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(270 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(285 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(300 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(315 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(330 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient2)" stroke="#C9B884" stroke-width="0.5" transform="rotate(345 400 300)"/>
+        </g>
+
+        <g opacity="0.5">
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8"/>
+        </g>
+        <g opacity="0.5">
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(15 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(30 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(45 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(60 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(75 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(90 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(105 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(120 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(135 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(150 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(165 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(180 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(195 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(210 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(225 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(240 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(255 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(270 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(285 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(300 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(315 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(330 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(345 400 300)"/>
+        </g>
+
+        <g opacity="0.6">
+          <circle cx="400" cy="300" r="100" fill="none" stroke="#D4C494" stroke-width="1"/>
+          <circle cx="400" cy="300" r="95" fill="none" stroke="#D4C494" stroke-width="1"/>
+          <circle cx="400" cy="300" r="90" fill="none" stroke="#D4C494" stroke-width="1"/>
+          <circle cx="400" cy="300" r="85" fill="none" stroke="#D4C494" stroke-width="1"/>
+        </g>
+
+        <g opacity="0.7">
+          <circle cx="400" cy="300" r="50" fill="url(#goldGradient1)" stroke="#C9B884" stroke-width="1"/>
+          <circle cx="400" cy="300" r="40" fill="none" stroke="#E6D5A8" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="30" fill="none" stroke="#E6D5A8" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="20" fill="#F4E8C1" stroke="#D4C494" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="10" fill="#E6D5A8"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="mandala-slot mandala-bottom">
+      <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+        <defs>
+          <radialGradient id="goldGradient3" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F4E8C1" stop-opacity="1" />
+            <stop offset="50%" stop-color="#E6D5A8" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#D4C494" stop-opacity="0.4" />
+          </radialGradient>
+          <radialGradient id="goldGradient4" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#E8D9B8" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#C9B884" stop-opacity="0.5" />
+          </radialGradient>
+        </defs>
+
+        <g opacity="0.3">
+          <circle cx="400" cy="300" r="280" fill="none" stroke="#D4C494" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="270" fill="none" stroke="#D4C494" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="260" fill="none" stroke="#D4C494" stroke-width="0.5"/>
+        </g>
+
+        <g opacity="0.4">
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(15 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(30 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(45 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(60 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(75 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(90 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(105 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(120 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(135 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(150 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(165 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(180 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(195 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(210 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(225 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(240 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(255 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(270 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(285 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(300 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(315 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(330 400 300)"/>
+          <path d="M 400 50 Q 420 150 400 200 Q 380 150 400 50" fill="url(#goldGradient4)" stroke="#C9B884" stroke-width="0.5" transform="rotate(345 400 300)"/>
+        </g>
+
+        <g opacity="0.5">
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(15 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(30 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(45 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(60 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(75 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(90 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(105 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(120 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(135 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(150 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(165 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(180 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(195 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(210 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(225 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(240 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(255 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(270 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(285 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(300 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(315 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(330 400 300)"/>
+          <path d="M 400 90 L 410 140 L 400 150 L 390 140 Z" fill="#E6D5A8" transform="rotate(345 400 300)"/>
+        </g>
+
+        <g opacity="0.6">
+          <circle cx="400" cy="300" r="100" fill="none" stroke="#D4C494" stroke-width="1"/>
+          <circle cx="400" cy="300" r="95" fill="none" stroke="#D4C494" stroke-width="1"/>
+          <circle cx="400" cy="300" r="90" fill="none" stroke="#D4C494" stroke-width="1"/>
+          <circle cx="400" cy="300" r="85" fill="none" stroke="#D4C494" stroke-width="1"/>
+        </g>
+
+        <g opacity="0.7">
+          <circle cx="400" cy="300" r="50" fill="url(#goldGradient3)" stroke="#C9B884" stroke-width="1"/>
+          <circle cx="400" cy="300" r="40" fill="none" stroke="#E6D5A8" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="30" fill="none" stroke="#E6D5A8" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="20" fill="#F4E8C1" stroke="#D4C494" stroke-width="0.5"/>
+          <circle cx="400" cy="300" r="10" fill="#E6D5A8"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const wrap = document.querySelector(".mandala-svg-wrap");
+      if (!wrap) return;
+
+      // If the static SVG is already present, don't overwrite it.
+      if (wrap.querySelector("svg")) return;
+
+      // Draw a math-based mandala (fallback).
+      wrap.innerHTML = "";
+
+      const SVG_NS = "http://www.w3.org/2000/svg";
+      const W = 800;
+      const H = 600;
+
+      const svg = document.createElementNS(SVG_NS, "svg");
+      svg.setAttribute("viewBox", "0 0 800 600");
+      svg.setAttribute("width", "100%");
+      svg.setAttribute("height", "100%");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+      wrap.appendChild(svg);
+
+      const cx = W / 2;
+      const cy = H / 2;
+      const R = 255;
+
+      // Palette extracted from your uploaded mandala image.
+      const palette = [
+        "#fcf0cf", // light cream
+        "#fbecc3", // warm cream
+        "#efd498", // light gold
+        "#f8e6b7", // pale gold
+        "#f5dda7", // soft wheat
+        "#e9c986", // deeper gold
+      ];
+
+      const randPick = (i) => palette[i % palette.length];
+
+      const makeEl = (tag, attrs) => {
+        const el = document.createElementNS(SVG_NS, tag);
+        for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, String(v));
+        return el;
+      };
+
+      // Utility: polar -> cartesian.
+      const polar = (theta, r) => ({
+        x: cx + r * Math.cos(theta),
+        y: cy + r * Math.sin(theta),
+      });
+
+      // Rings (pure math circles): r_i = R * (i / N)
+      const rings = 14;
+      for (let i = 1; i <= rings; i++) {
+        const r = (R * i) / rings;
+        svg.appendChild(
+          makeEl("circle", {
+            cx,
+            cy,
+            r,
+            fill: "none",
+            stroke: randPick(i),
+            "stroke-width": 0.85,
+            opacity: 0.26,
+          })
+        );
+      }
+
+      // Rosette curves:
+      // r(theta) = R * (base + amp * (cos(k*theta))^p )
+      const rosettes = [
+        { k: 12, base: 0.52, amp: 0.28, p: 2.2, op: 0.30, sw: 0.95 },
+        { k: 18, base: 0.48, amp: 0.30, p: 2.6, op: 0.26, sw: 0.85 },
+        { k: 24, base: 0.46, amp: 0.32, p: 3.0, op: 0.22, sw: 0.8 },
+      ];
+
+      const toPath = (k, base, amp, p, steps = 720) => {
+        let d = "";
+        for (let s = 0; s <= steps; s++) {
+          const t = (s / steps) * Math.PI * 2;
+          const c = Math.cos(k * t);
+          const shape = Math.pow(Math.abs(c), p);
+          const r = R * (base + amp * shape);
+          const { x, y } = polar(t, r);
+          d += s === 0 ? `M ${x.toFixed(2)} ${y.toFixed(2)}` : ` L ${x.toFixed(2)} ${y.toFixed(2)}`;
+        }
+        return d;
+      };
+
+      rosettes.forEach((cfg, idx) => {
+        svg.appendChild(
+          makeEl("path", {
+            d: toPath(cfg.k, cfg.base, cfg.amp, cfg.p),
+            fill: "none",
+            stroke: randPick(idx + 2),
+            "stroke-width": cfg.sw,
+            opacity: cfg.op,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+          })
+        );
+      });
+
+      // Spokes (again math): draw lines at equal angles.
+      const spokes = 48;
+      for (let i = 0; i < spokes; i++) {
+        const a = (i / spokes) * Math.PI * 2;
+        const r1 = R * 0.08;
+        const r2 = R * 0.92;
+        const p1 = polar(a, r1);
+        const p2 = polar(a, r2);
+
+        svg.appendChild(
+          makeEl("line", {
+            x1: p1.x,
+            y1: p1.y,
+            x2: p2.x,
+            y2: p2.y,
+            stroke: randPick(i),
+            "stroke-width": 0.7,
+            opacity: 0.16,
+          })
+        );
+      }
+
+      // Center bloom
+      svg.appendChild(
+        makeEl("circle", {
+          cx,
+          cy,
+          r: 32,
+          fill: randPick(0),
+          opacity: 0.16,
+        })
+      );
+      svg.appendChild(
+        makeEl("circle", {
+          cx,
+          cy,
+          r: 14,
+          fill: randPick(2),
+          opacity: 0.20,
+        })
+      );
+    })();
+  </script>
+  <div class="app-content w-full min-h-screen flex justify-center px-3 sm:px-6 py-4 sm:py-10">
+    <div class="w-full max-w-6xl">
+      <header class="w-full flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-8 md:mb-12">
+        <div class="flex items-center gap-4 min-w-0">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Chandassu Logo" class="w-16 sm:w-20 h-auto object-contain shrink-0"/>
+          <div class="min-w-0">
+            <h1 class="text-2xl sm:text-3xl font-black tracking-tight uppercase title-glow truncate">Chandassu Hub</h1>
+            <p class="text-[10px] sm:text-xs font-bold gold-text tracking-[0.22em] uppercase">The Art of Telugu Verse</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 md:gap-6">
+          <div class="hidden md:flex gap-8 text-sm font-bold subtle-text uppercase tracking-widest">
+            <a class="gold-text" href="#">దేశ భాషలందు తెలుగు లెస్స</a>
+          </div>
+
+          <div class="flex items-center gap-3 px-2 py-1 pr-4 rounded-full status-chip max-w-full">
+            <img
+              alt="User Avatar"
+              class="w-10 h-10 rounded-full border border-white/20 shadow-sm object-cover shrink-0"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxq6_cOsB1lTQwHrMfG20geFTSwGmP1x82D2HJXMczUi4S7L_L-HMoC1r_5FjvnDEBJt6oYCVgvugA7amkJ3-n6wGYi109i3gyqxWvMbBSZ88ikXixWvIkNPa3yuc7w6E1nL63V00gtftBE4rzw8qJQDZIDACksVdSizrtve-04z9a-KRjSF1lsQ_O1VXYO1oJYjK9GaFzbsM2Z9zQ9ENYhhyaw9goqoFDM3sESr0PDSVVrMN0TYfl9JpJPLgGjv5lMZdvTdHHikrL"
+            />
+            <span class="font-black gold-text text-sm sm:text-base truncate">తెలుగు చంధస్సు</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="w-full flex flex-col gap-6 md:gap-8">
+        <section class="hero-card rounded-hero px-4 py-6 sm:px-8 sm:py-10 md:p-10 lg:p-12 flex flex-col gap-8">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="stagePill" class="px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest stage-chip">
+                  Step 1: Generate poem
+                </span>
+                <span class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wide status-chip">
+                  Line <span id="lineNow">1</span>/4
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-2 text-xs sm:text-sm">
+                <div class="rounded-full px-4 py-2 font-black status-chip">Answered: <span id="ansNow">0</span></div>
+                <div class="rounded-full px-4 py-2 font-black status-chip">Total: <span id="totNow">0</span></div>
+               <!-- <div class="rounded-full px-4 py-2 font-black status-chip">Detected: <span id="detNow">Hidden</span></div>-->
+                <div class="rounded-full px-4 py-2 font-black status-chip">Time: <span id="timerNow">00:00</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="inputArea" class="flex flex-col items-center text-center">
+            <span class="px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block stage-chip">
+              AI Game Mode
+            </span>
+
+            <h2 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight mb-4 break-words title-glow">
+              పద్యాన్ని విశ్లేషిద్దాం
+            </h2>
+
+            <p class="text-base sm:text-lg subtle-text font-medium italic mb-6">
+              Random poem comes from dataset. All 4 lines will be shown here.
+            </p>
+
+            <div
+              id="poemDisplay"
+              class="w-full max-w-4xl rounded-[2rem] shadow-sm text-center leading-9 poem-box"
+              aria-live="polite"
+            >
+              <img
+                src="{{ url_for('elephant_image') }}"
+                alt=""
+                aria-hidden="true"
+                class="poem-elephant"
+              />
+              <div
+                id="poemText"
+                class="text-lg sm:text-xl"
+                style="font-family:'Noto Serif Telugu','Cinzel',serif; white-space:pre-line; letter-spacing:0.02em;"
+              >
+                Random poem will appear here...
+              </div>
+            </div>
+          </div>
+
+          <div id="playArea" class="flex flex-wrap justify-center gap-4">
+            <button class="btnPrimary" id="loadBtn" type="button">
+              <span class="material-symbols-outlined">casino</span>
+              Generate Random Poem
+            </button>
+
+            <button id="startBtn" type="button" class="btnPrimary">
+              <span class="material-symbols-outlined">play_circle</span>
+              Start Game
+            </button>
+
+            <button id="resetBtn" type="button" class="btnSecondary">
+              <span class="material-symbols-outlined">refresh</span>
+              Reset
+            </button>
+          </div>
+
+          <div class="rounded-[2rem] p-5 sm:p-6 panel-soft">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-black gold-text uppercase tracking-[0.2em] mb-2">Current Line</p>
+                <p id="origLineEl" class="text-lg sm:text-xl md:text-2xl font-black leading-relaxed break-words title-glow" style="font-family:'Noto Sans Telugu',sans-serif;">—</p>
+              </div>
+              <div class="rounded-2xl px-5 py-4 text-center min-w-[120px] info-box">
+                <p class="text-[11px] font-black uppercase tracking-wider text-[#6A5A42]">Aksharas</p>
+                <p id="akCountEl" class="text-2xl font-black text-[#34206D]">0</p>
+              </div>
+            </div>
+
+            <div id="lineCheckText" class="hidden mt-4"></div>
+          </div>
+
+          <!--<div id="guideWrap" class="rounded-[2rem] p-5 sm:p-6 panel-soft">
+            <div class="flex flex-col md:flex-row gap-4 md:items-start md:justify-between">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-black gold-text uppercase tracking-[0.2em] mb-2">Guru / Laghu Guide</p>
+                <p id="guideRuleText" class="text-base sm:text-lg subtle-text font-medium leading-7">
+                  Select or hover on an akshara tile. The system will explain whether it is likely Guru or Laghu and why.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 min-w-0 w-full md:w-auto md:min-w-[280px]">
+                <div class="rounded-2xl px-4 py-4 info-box">
+                  <p class="text-[11px] font-black uppercase tracking-wider text-[#6A5A42]">Akshara</p>
+                  <p id="guideAkshara" class="text-2xl font-black mt-2 text-[#34206D]" style="font-family:'Noto Sans Telugu',sans-serif;">—</p>
+                </div>
+
+                <div class="rounded-2xl px-4 py-4 info-box">
+                  <p class="text-[11px] font-black uppercase tracking-wider text-[#6A5A42]">Suggested</p>
+                  <p id="guideSuggested" class="text-2xl font-black mt-2 text-[#4B2D72]">—</p>
+                </div>
+
+                <div class="rounded-2xl px-4 py-4 info-box">
+                  <p class="text-[11px] font-black uppercase tracking-wider text-[#6A5A42]">Hint</p>
+                  <p id="guideShort" class="text-lg font-black mt-2 text-[#B84A40]">—</p>
+                </div>
+              </div>
+            </div>
+          </div>-->
+
+          <div id="tilesWrap" class="hidden">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h3 id="tilesHost" class="text-base sm:text-lg font-black title-glow">
+                Aksharas (tap Guru / Laghu):
+              </h3>
+
+              <div class="flex flex-wrap gap-2">
+                <button id="autoFillBtn" type="button" class="hidden">
+                  Auto Fill
+                </button>
+              </div>
+            </div>
+
+            <div id="tiles" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row justify-between gap-4">
+            <button id="prevLineBtn" type="button" class="btnSecondary">
+              <span class="material-symbols-outlined">arrow_back</span>
+              Previous Line
+            </button>
+
+            <button id="nextLineBtn" type="button" class="btnPrimary">
+              <span class="material-symbols-outlined">arrow_forward</span>
+              Next Line
+            </button>
+          </div>
+        </section>
+
+        <section id="resultBox" class="rounded-[2.2rem] p-5 sm:p-6 md:p-8 hidden"></section>
+      </main>
+    </div>
+  </div>
+
+  <div id="helperFace">
+    <div id="bubble">
+      <span id="hintText" class="italic text-[#5A4B3F]">
+        Hmm, ఛందస్సును విశ్లేషిస్తున్నాను...
+      </span>
+      <p class="text-[#786654] text-xs mt-1">Analyzing the meter...</p>
+      <button
+        id="nextHintBtn"
+        type="button"
+        class="mt-3 text-xs font-black gold-text uppercase tracking-wide"
+      >
+        Next Hint
+      </button>
+    </div>
+
+    <img
+      alt="Guru Garu Helper"
+      class="guru-kid-img"
+      src="{{ url_for('static', filename='images/face.png') }}"
+    />
+  </div>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("mandala-canvas");
+      if (!canvas) return;
+      // If the video background is active, don't waste CPU drawing the hidden canvas.
+      const video = document.getElementById("mandala-video-bg");
+      if (video) return;
+      const ctx = canvas.getContext("2d", { alpha: true });
+      if (!ctx) return;
+
+      const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+      // Gold/orange palette (matches your mandala image vibe).
+      const palette = [
+        "#fcf0cf",
+        "#fbecc3",
+        "#efd498",
+        "#f8e6b7",
+        "#f5dda7",
+        "#e9c986",
+        "#e3b36e",
+        "#d79a3a",
+      ];
+
+      let w = 0;
+      let h = 0;
+
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS pixels
+      };
+
+      const draw = (tMs) => {
+        const t = tMs * 0.001;
+        ctx.clearRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = h / 2;
+        const minDim = Math.min(w, h);
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.globalCompositeOperation = "lighter";
+
+        const layers = 7;
+        const points = 220;
+
+        for (let L = 0; L < layers; L++) {
+          const frac = L / (layers - 1);
+          const rBase = minDim * (0.10 + frac * 0.36);
+          const freq = 5 + L * 1.7;
+          const spin = t * (0.18 + frac * 0.08);
+
+          const alpha = 0.14 * (1 - frac) + 0.05;
+          const color = palette[L % palette.length];
+          const lw = 0.8 + (1 - frac) * 1.0;
+
+          ctx.lineWidth = lw;
+          ctx.strokeStyle = color;
+          ctx.globalAlpha = alpha;
+
+          ctx.beginPath();
+          for (let i = 0; i <= points; i++) {
+            const theta = (i / points) * Math.PI * 2;
+
+            // “Orange peel” texture: rose-like wobble + absolute sine modulation.
+            let r =
+              rBase *
+              (0.72 +
+                0.24 * Math.sin(theta * freq + t * (0.9 + frac)) +
+                0.10 * Math.abs(Math.sin(theta * 4 + t * 0.35)));
+
+            // Inner petal wobble
+            r *= 0.92 + 0.08 * Math.cos(theta * (12 + L) - t * 0.55);
+
+            const a = theta + spin;
+            const x = r * Math.cos(a);
+            const y = r * Math.sin(a);
+
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        // Soft center bloom
+        ctx.globalAlpha = 0.08;
+        ctx.fillStyle = palette[2];
+        ctx.beginPath();
+        ctx.arc(0, 0, minDim * 0.03, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      };
+
+      const tick = (t) => {
+        draw(t);
+        requestAnimationFrame(tick);
+      };
+
+      resize();
+      if (prefersReducedMotion) {
+        draw(0);
+      } else {
+        requestAnimationFrame(tick);
+      }
+
+      window.addEventListener("resize", resize, { passive: true });
+    })();
+  </script>
+
+  <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>

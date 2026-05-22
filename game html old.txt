@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Chandassu Web Hub - Thinking State</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;700;800&display=swap" rel="stylesheet"/>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "sky-soft": "#E0F2FE",
+            "cream-soft": "#FDFCF8",
+            "teal-accent": "#0D9488",
+            "peacock": "#005F73",
+            "mango": "#FFC300",
+            "leaf": "#2D6A4F",
+            "ivory": "#FDFCF8",
+            "indigo-glow": "#6366f1"
+          },
+          fontFamily: {
+            "display": ["Lexend", "sans-serif"]
+          },
+          borderRadius: {
+            "hero": "3rem",
+            "tile": "1.25rem"
+          },
+          animation: {
+            "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            "fade-in-up": "fadeInUp 1s ease-out forwards",
+            "bounce-dots": "bounceDots 1.4s infinite"
+          },
+          keyframes: {
+            fadeInUp: {
+              "0%": { opacity: "0", transform: "translateY(10px)" },
+              "100%": { opacity: "1", transform: "translateY(0)" }
+            },
+            bounceDots: {
+              "0%, 80%, 100%": { transform: "scale(0)" },
+              "40%": { transform: "scale(1)" }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer base {
+      html { @apply h-full; }
+      body {
+        @apply min-h-screen font-display text-slate-800 overflow-x-hidden;
+        background: radial-gradient(circle at top, #E0F2FE 0%, #FDFCF8 100%);
+      }
+    }
+
+    .landscape-bg{
+      position:fixed;
+      inset:0;
+      z-index:-10;
+      background: linear-gradient(180deg, #BAE6FD 0%, #DCFCE7 100%);
+      pointer-events:none;
+    }
+
+    .hill-layer{
+      position:absolute;
+      left:-10%;
+      width:120%;
+      height:40vh;
+      border-radius:50% 50% 0 0;
+      bottom:-5vh;
+    }
+
+    .sun-orb{
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 9999px;
+      top: 48px;
+      right: 20px;
+      left: auto;
+      background:
+        radial-gradient(circle at 35% 35%, #fff7c2 0%, #ffe27a 25%, #ffc83d 55%, #ffb300 75%, rgba(255,179,0,0.88) 100%);
+      box-shadow:
+        0 0 40px rgba(255, 200, 61, 0.65),
+        0 0 90px rgba(255, 200, 61, 0.35),
+        0 0 140px rgba(255, 200, 61, 0.18);
+      z-index: -9;
+      pointer-events: none;
+    }
+    #helperFace{
+      position: fixed;
+      right: -17px;
+      bottom: 10px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* message box */
+    #bubble{
+      background: white;
+      padding: 14px 16px;
+      border-radius: 20px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+      border: 1px solid #e5e7eb;
+      width: 260px;
+      position: relative;
+      text-align: left;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    /* arrow under message box */
+    #bubble::after{
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      bottom: -8px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-right: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* wrapper for helper */
+    .guru-kid-wrap{
+      position: relative;
+      width: 400px;          /* match image width */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* guru image */
+    .guru-kid-img{
+      width: 150px;
+      height: auto;
+      left:10px;
+      object-fit: contain;
+      display: block;
+      position: relative;
+      z-index: 10;
+      animation: helperFloat 2.8s ease-in-out infinite;
+    }
+
+    /* mobile */
+    @media (max-width: 768px){
+
+      #helperFace{
+        right: 10px;
+        bottom: 10px;
+      }
+
+      #bubble{
+        width: 220px;
+        padding: 12px 14px;
+      }
+
+      .guru-kid-wrap{
+        width: 200px;
+      }
+
+      .guru-kid-img{
+        width: 400px;
+      }
+
+    }
+
+    .hero-card{
+      @apply bg-white/80 backdrop-blur-md border border-white/60;
+      box-shadow: 0 32px 64px -16px rgba(0,0,0,0.10);
+    }
+
+    .tile{
+      @apply bg-ivory border-2 border-white rounded-tile flex flex-col items-center justify-center transition-all duration-200 p-3 min-h-[150px] relative;
+      box-shadow: 0 10px 0 0 #E5E1D8, 0 20px 30px -10px rgba(0,0,0,0.10);
+    }
+
+    .tile:hover{
+      @apply -translate-y-1;
+      box-shadow: 0 12px 0 0 #E5E1D8, 0 25px 35px -10px rgba(0,0,0,0.15);
+    }
+
+    .tile.active{
+      @apply ring-4 ring-teal-accent/30 border-teal-accent;
+    }
+
+    .tile.wrong{
+      @apply border-red-400 ring-2 ring-red-200;
+    }
+
+    .btnPrimary{
+      @apply transition-all duration-100 active:translate-y-1 bg-peacock text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 shadow-lg;
+      box-shadow: 0 6px 0 0 rgba(0,0,0,0.2);
+    }
+
+    .btnPrimary:active{
+      box-shadow: 0 2px 0 0 rgba(0,0,0,0.1);
+    }
+
+    .tagPill{
+      @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide mr-2 mb-2;
+    }
+    .tagPill.good{ @apply bg-green-100 text-green-700; }
+    .tagPill.bad{ @apply bg-red-100 text-red-700; }
+    .tagPill.warn{ @apply bg-yellow-100 text-yellow-700; }
+
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .small{ @apply text-sm text-slate-600; }
+
+    .ak{
+      @apply text-3xl sm:text-4xl font-black text-slate-800 text-center break-words;
+      font-family:'Noto Sans Telugu',sans-serif;
+    }
+
+    .pick{
+      @apply mt-4 flex gap-2 flex-wrap justify-center;
+    }
+
+    .pick button{
+      @apply px-3 py-2 rounded-xl text-xs font-black border border-slate-200 bg-white text-slate-600;
+    }
+
+    .pick button.guruOn{
+      @apply bg-mango text-white border-mango;
+    }
+
+    .pick button.laghuOn{
+      @apply bg-teal-accent text-white border-teal-accent;
+    }
+
+    .mini{
+      @apply absolute top-2 right-2 text-[10px] font-black uppercase tracking-wide text-transparent;
+    }
+
+    .tile.wrong .mini{
+      @apply text-red-500;
+    }
+
+    #helperFace{
+      @apply fixed z-[100] flex flex-col items-end gap-2;
+      right: 1rem;
+      bottom: 1rem;
+    }
+
+    #bubble{
+      @apply bg-white p-4 md:p-5 rounded-3xl shadow-2xl border border-slate-100 text-sm font-medium relative;
+      width: min(280px, calc(100vw - 2rem));
+      animation: fadeInUp 1s ease-out forwards;
+    }
+
+    #bubble::after{
+      content: "";
+      @apply absolute -bottom-2 right-8 w-4 h-4 bg-white rotate-45 border-r border-b border-slate-100;
+    }
+
+    .avatar-container{
+      @apply relative p-2 rounded-full transition-all duration-1000;
+    }
+
+    .processing-glow{
+      @apply absolute inset-0 rounded-full bg-indigo-glow/20 blur-xl animate-pulse-slow;
+    }
+
+    .avatar-circle{
+      @apply w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white shadow-xl overflow-hidden cursor-pointer relative z-10 bg-mango;
+    }
+
+    .thought-bubble{
+      @apply absolute -top-3 left-0 bg-white px-3 py-2 rounded-2xl shadow-lg border border-slate-100 flex gap-1 z-20;
+    }
+
+    .dot{
+      @apply w-1.5 h-1.5 bg-peacock rounded-full animate-bounce-dots;
+    }
+
+    .dot:nth-child(2){ animation-delay: 0.2s; }
+    .dot:nth-child(3){ animation-delay: 0.4s; }
+
+    .quizOption{
+      @apply block w-full text-left rounded-2xl border border-slate-200 bg-white px-4 py-3 font-bold text-slate-700 transition-all;
+    }
+
+    .quizOption:hover{
+      @apply border-teal-accent/40 bg-teal-accent/5;
+    }
+
+    .quizOption.selected{
+      @apply border-teal-accent bg-teal-accent/10 text-teal-accent;
+    }
+
+    @media (max-width: 768px){
+      .hill-layer{ height: 28vh; }
+      #helperFace{ right: 0.75rem; bottom: 0.75rem; }
+      #bubble{ font-size: 13px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="landscape-bg">
+    <div id="sunOrb" class="sun-orb"></div>
+    <div class="hill-layer bg-leaf/10 scale-110 -translate-x-10"></div>
+    <div class="hill-layer bg-leaf/20 translate-y-10 translate-x-10"></div>
+    <div class="hill-layer bg-leaf/30 translate-y-20"></div>
+  </div>
+
+  <div class="w-full min-h-screen flex justify-center px-4 sm:px-6 py-6 sm:py-10">
+    <div class="w-full max-w-6xl">
+      <header class="w-full flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-8 md:mb-12">
+        <div class="flex items-center gap-4">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Chandassu Logo" class="w-20 h-30 object-contain"/>
+          <div>
+            <h1 class="text-2xl font-black text-peacock tracking-tight uppercase">Chandassu Hub</h1>
+            <p class="text-[10px] font-bold text-teal-accent tracking-[0.2em] uppercase">The Art of Telugu Verse</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 md:gap-6">
+          <div class="hidden md:flex gap-8 text-sm font-bold text-slate-500 uppercase tracking-widest">
+            <a class="text-peacock" href="#">దేశ భాషలందు తెలుగు లెస్స</a>
+          </div>
+
+          <div class="flex items-center gap-3 bg-white/50 backdrop-blur p-1 pr-4 rounded-full border border-white shadow-sm">
+            <img
+              alt="User Avatar"
+              class="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxq6_cOsB1lTQwHrMfG20geFTSwGmP1x82D2HJXMczUi4S7L_L-HMoC1r_5FjvnDEBJt6oYCVgvugA7amkJ3-n6wGYi109i3gyqxWvMbBSZ88ikXixWvIkNPa3yuc7w6E1nL63V00gtftBE4rzw8qJQDZIDACksVdSizrtve-04z9a-KRjSF1lsQ_O1VXYO1oJYjK9GaFzbsM2Z9zQ9ENYhhyaw9goqoFDM3sESr0PDSVVrMN0TYfl9JpJPLgGjv5lMZdvTdHHikrL"
+            />
+            <span class="font-black text-peacock">తెలుగు చంధస్సు</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="w-full flex flex-col gap-6 md:gap-8">
+        <section class="hero-card rounded-hero px-5 py-8 sm:px-8 sm:py-10 md:p-10 lg:p-12 flex flex-col gap-8">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="stagePill" class="px-6 py-2 bg-teal-accent/10 text-teal-accent rounded-full text-xs font-black uppercase tracking-widest">
+                  Step 1: Load poem
+                </span>
+                <span class="px-4 py-2 bg-white text-slate-500 rounded-full text-xs font-black uppercase tracking-wide">
+                  Line <span id="lineNow">1</span>/4
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-2 text-xs sm:text-sm">
+                <div class="bg-white rounded-full px-4 py-2 font-black text-slate-600">Answered: <span id="ansNow">0</span></div>
+                <div class="bg-white rounded-full px-4 py-2 font-black text-slate-600">Total: <span id="totNow">0</span></div>
+                <div class="bg-white rounded-full px-4 py-2 font-black text-slate-600">Detected: <span id="detNow">Hidden</span></div>
+                <div class="bg-white rounded-full px-4 py-2 font-black text-slate-600">Time: <span id="timerNow">00:00</span></div>
+              </div>
+            </div>
+
+           <!-- <div class="bg-white/70 border border-white rounded-2xl px-4 py-3">
+              <p id="progressText" class="text-sm sm:text-base text-slate-600 font-medium">
+                Click “Load Random Poem” to start the Chandassu game.
+              </p>
+            </div>
+          </div>-->
+
+          <div id="inputArea" class="flex flex-col items-center text-center">
+            <span class="px-6 py-2 bg-teal-accent/10 text-teal-accent rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block">
+              AI Game Mode
+            </span>
+
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-peacock tracking-tight mb-4 break-words">
+              పద్యాన్ని విశ్లేషిద్దాం
+            </h2>
+
+            <p class="text-base sm:text-lg text-slate-400 font-medium italic mb-6">
+              Random poem comes from dataset. All 4 lines will be shown here.
+            </p>
+
+            <div
+              id="poemDisplay"
+              class="w-full max-w-4xl min-h-[220px] rounded-[2rem] border-2 border-peacock/10 bg-white/90 p-5 text-base sm:text-lg text-slate-700 shadow-sm text-left leading-9"
+              style="font-family:'Noto Sans Telugu',sans-serif; white-space:pre-line;"
+            >Random poem will appear here...</div>
+          </div>
+
+          <div id="playArea" class="flex flex-wrap justify-center gap-4">
+            <button class="btnPrimary" id="loadBtn" type="button">
+              <span class="material-symbols-outlined">casino</span>
+              Load Random Poem
+            </button>
+
+            <button id="startBtn" type="button" class="btnPrimary">
+              <span class="material-symbols-outlined">play_circle</span>
+              Start Game
+            </button>
+
+            <button id="resetBtn" type="button" class="bg-white text-peacock border-2 border-peacock/10 px-8 py-4 rounded-2xl font-bold hover:bg-white/50 transition-all flex items-center gap-2 shadow-sm">
+              <span class="material-symbols-outlined">refresh</span>
+              Reset
+            </button>
+          </div>
+
+          <div class="bg-white/50 rounded-[2rem] p-5 sm:p-6 border border-white/80">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              <div class="flex-1">
+                <p class="text-xs font-black text-teal-accent uppercase tracking-[0.2em] mb-2">Current Line</p>
+                <p id="origLineEl" class="text-lg sm:text-xl md:text-2xl font-black text-peacock leading-relaxed break-words" style="font-family:'Noto Sans Telugu',sans-serif;">—</p>
+              </div>
+              <div class="bg-white rounded-2xl px-5 py-4 text-center min-w-[120px]">
+                <p class="text-[11px] font-black text-slate-500 uppercase tracking-wider">Aksharas</p>
+                <p id="akCountEl" class="text-2xl font-black text-peacock">0</p>
+              </div>
+            </div>
+
+            <div id="lineCheckText" class="hidden mt-4"></div>
+          </div>
+
+          <div id="guideWrap" class="bg-white/50 rounded-[2rem] p-5 sm:p-6 border border-white/80">
+            <div class="flex flex-col md:flex-row gap-4 md:items-start md:justify-between">
+              <div class="flex-1">
+                <p class="text-xs font-black text-teal-accent uppercase tracking-[0.2em] mb-2">Guru / Laghu Guide</p>
+                <p id="guideRuleText" class="text-base sm:text-lg text-slate-700 font-medium leading-7">
+                  Select or hover on an akshara tile. The system will explain whether it is likely Guru or Laghu and why.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 min-w-[280px] w-full md:w-auto">
+                <div class="bg-white rounded-2xl px-4 py-4">
+                  <p class="text-[11px] font-black text-slate-500 uppercase tracking-wider">Akshara</p>
+                  <p id="guideAkshara" class="text-2xl font-black text-peacock mt-2" style="font-family:'Noto Sans Telugu',sans-serif;">—</p>
+                </div>
+
+                <div class="bg-white rounded-2xl px-4 py-4">
+                  <p class="text-[11px] font-black text-slate-500 uppercase tracking-wider">Suggested</p>
+                  <p id="guideSuggested" class="text-2xl font-black text-leaf mt-2">—</p>
+                </div>
+
+                <div class="bg-white rounded-2xl px-4 py-4">
+                  <p class="text-[11px] font-black text-slate-500 uppercase tracking-wider">Hint</p>
+                  <p id="guideShort" class="text-lg font-black text-mango mt-2">—</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tilesWrap" class="hidden">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h3 id="tilesHost" class="text-base sm:text-lg font-black text-peacock">
+                Aksharas (tap Guru / Laghu):
+              </h3>
+
+              <div class="flex flex-wrap gap-2">
+                <button id="autoFillBtn" type="button" class="hidden">
+                  Auto Fill
+                </button>
+              </div>
+            </div>
+
+            <div id="tiles" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row justify-between gap-4">
+            <button id="prevLineBtn" type="button" class="bg-white text-peacock border-2 border-peacock/10 px-8 py-4 rounded-2xl font-bold hover:bg-white/50 transition-all flex items-center justify-center gap-2 shadow-sm">
+              <span class="material-symbols-outlined">arrow_back</span>
+              Previous Line
+            </button>
+
+            <button id="nextLineBtn" type="button" class="btnPrimary">
+              <span class="material-symbols-outlined">arrow_forward</span>
+              Next Line
+            </button>
+          </div>
+        </section>
+
+        <section id="resultBox" class="bg-leaf/10 border-2 border-leaf/20 rounded-[2.5rem] p-5 sm:p-6 md:p-8 hidden"></section>
+      </main>
+    </div>
+  </div>
+
+<div id="helperFace">
+  <div id="bubble">
+    <span id="hintText" class="text-slate-500 italic">
+      Hmm, ఛందస్సును విశ్లేషిస్తున్నాను...
+    </span>
+    <p class="text-slate-600 text-xs mt-1">Analyzing the meter...</p>
+    <button
+      id="nextHintBtn"
+      type="button"
+      class="mt-3 text-xs font-black text-teal-accent uppercase tracking-wide"
+    >
+      Next Hint
+    </button>
+  </div>
+
+
+
+    <img
+      alt="Guru Garu Helper"
+      class="guru-kid-img"
+      src="{{ url_for('static', filename='images/face.png') }}"
+    />
+
+  </div>
+</div>
+
+  <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
